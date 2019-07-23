@@ -37,19 +37,33 @@ const knexInstance = knex({
 
 // paginate(3)
 
-function afterDate(daysAgo){
+// function afterDate(daysAgo){
+//     knexInstance
+//     .select('*')
+//     .from('shopping_list')
+//     .where(
+//         'date_added',
+//         '>',
+//         knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo)
+//     )
+//     .then(res=>{
+//         console.log(res)
+//     })
+//     .finally(()=>knexInstance.destroy())
+// }
+
+// afterDate(2)
+
+function totalCost(){
     knexInstance
-    .select('*')
+    .select('category')
+    .sum('price')
     .from('shopping_list')
-    .where(
-        'date_added',
-        '>',
-        knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo)
-    )
+    .groupBy('category')
     .then(res=>{
         console.log(res)
     })
     .finally(()=>knexInstance.destroy())
 }
 
-afterDate(2)
+totalCost();
