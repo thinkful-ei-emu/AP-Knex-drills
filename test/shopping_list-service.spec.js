@@ -58,6 +58,22 @@ describe("Shopping List service object", () => {
         expect(actual).to.eql(expectedItems);
       });
     });
+
+    it("getById() finds by id", () => {
+      const thirdId = 3
+      const thirdTestItem = testItems[thirdId - 1]
+      return ShoppingListService.getById(db, thirdId)
+        .then(actual => {
+          expect(actual).to.eql({
+            id: thirdId,
+            name: thirdTestItem.name,
+            price: thirdTestItem.price,
+            date_added: thirdTestItem.date_added,
+            checked: thirdTestItem.checked,
+            category: thirdTestItem.category
+        });
+      });
+    });
   });
 
   context("Given shopping_list has no data", () => {
@@ -74,9 +90,8 @@ describe("Shopping List service object", () => {
         date_added: new Date("2029-01-22T16:28:32.615Z"),
         checked: false,
         category: "Breakfast"
-      }
-      return ShoppingListService.addItem(db, newItem)
-      .then(actual=>{
+      };
+      return ShoppingListService.addItem(db, newItem).then(actual => {
         expect(actual).to.eql({
           id: 1,
           name: newItem.name,
@@ -84,8 +99,8 @@ describe("Shopping List service object", () => {
           date_added: newItem.date_added,
           checked: newItem.checked,
           category: newItem.category
-        })
-      })
+        });
+      });
     });
   });
 });
