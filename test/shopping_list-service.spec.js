@@ -60,30 +60,49 @@ describe("Shopping List service object", () => {
     });
 
     it("getById() finds by id", () => {
-      const thirdId = 3
-      const thirdTestItem = testItems[thirdId - 1]
-      return ShoppingListService.getById(db, thirdId)
-        .then(actual => {
-          expect(actual).to.eql({
-            id: thirdId,
-            name: thirdTestItem.name,
-            price: thirdTestItem.price,
-            date_added: thirdTestItem.date_added,
-            checked: thirdTestItem.checked,
-            category: thirdTestItem.category
+      const thirdId = 3;
+      const thirdTestItem = testItems[thirdId - 1];
+      return ShoppingListService.getById(db, thirdId).then(actual => {
+        expect(actual).to.eql({
+          id: thirdId,
+          name: thirdTestItem.name,
+          price: thirdTestItem.price,
+          date_added: thirdTestItem.date_added,
+          checked: thirdTestItem.checked,
+          category: thirdTestItem.category
         });
       });
     });
 
-    it('deleteItem() removes by id', ()=>{
-      const itemId = 3
+    it("deleteItem() removes by id", () => {
+      const itemId = 3;
       return ShoppingListService.deleteItem(db, itemId)
-      .then(()=> ShoppingListService.getAllItems(db))
-      .then(allItems=>{
-        const expected = testItems.filter(item=>item.id !== itemId)
-        expect(allItems).to.eql(expected)
+        .then(() => ShoppingListService.getAllItems(db))
+        .then(allItems => {
+          const expected = testItems.filter(item => item.id !== itemId);
+          expect(allItems).to.eql(expected);
+        });
+    });
+
+    it("updateItem() updates item", () => {
+      const idOfItemToUpdate = 3;
+      const newItemData = {
+        name: "Updated name",
+        price: "5.00",
+        date_added: new Date("1919-12-22T16:28:32.615Z"),
+        checked: false,
+        category: "Breakfast"
+      }
+
+      return ShoppingListService.updateItem(db, idOfItemToUpdate, newItemData)
+      .then(()=> ShoppingListService.getById(db, idOfItemToUpdate))
+      .then(item=>{
+        expect(item).to.eql({
+          id: idOfItemToUpdate,
+          ...newItemData
+        })
       })
-    })
+    });
   });
 
   context("Given shopping_list has no data", () => {

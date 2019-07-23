@@ -9,16 +9,5 @@ const knexInstance = knex({
 
 ShoppingListService.getAllItems(knexInstance)
   .then(item => console.log(item))
-  .then(() =>
-    ShoppingListService.addItem(knexInstance, {
-      name: "Test for Add",
-      price: "6.00",
-      date_added: new Date(),
-      checked: true,
-      category: "Breakfast"
-    })
-  )
-  .then(()=>
-  ShoppingListService.deleteItem(knexInstance, 35))
-
+  .then(()=> ShoppingListService.deleteItem(knexInstance, 34))
   .finally(() => knexInstance.destroy());
