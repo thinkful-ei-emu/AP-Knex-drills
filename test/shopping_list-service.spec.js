@@ -54,9 +54,37 @@ describe("Shopping List service object", () => {
     it("getAllItems()", () => {
       const expectedItems = testItems;
 
-      return ShoppingListService.getAllItems(db)
+      return ShoppingListService.getAllItems(db).then(actual => {
+        expect(actual).to.eql(expectedItems);
+      });
+    });
+  });
+
+  context("Given shopping_list has no data", () => {
+    it("getAllItems() resolves an empty arr", () => {
+      return ShoppingListService.getAllItems(db).then(actual => {
+        expect(actual).to.eql([]);
+      });
+    });
+
+    it("addItem adds an item", () => {
+      const newItem = {
+        name: "Test",
+        price: "1.00",
+        date_added: new Date("2029-01-22T16:28:32.615Z"),
+        checked: false,
+        category: "Breakfast"
+      }
+      return ShoppingListService.addItem(db, newItem)
       .then(actual=>{
-          expect(actual).to.eql(expectedItems)
+        expect(actual).to.eql({
+          id: 1,
+          name: newItem.name,
+          price: newItem.price,
+          date_added: newItem.date_added,
+          checked: newItem.checked,
+          category: newItem.category
+        })
       })
     });
   });
