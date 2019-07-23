@@ -1,3 +1,4 @@
+TRUNCATE blogful_articles;
 insert into blogful_articles
 (title, date_published, content)
 values
