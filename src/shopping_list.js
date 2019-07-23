@@ -18,5 +18,7 @@ ShoppingListService.getAllItems(knexInstance)
       category: "Breakfast"
     })
   )
-  
+  .then(()=>
+  ShoppingListService.deleteItem(knexInstance, 35))
+
   .finally(() => knexInstance.destroy());

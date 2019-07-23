@@ -74,6 +74,16 @@ describe("Shopping List service object", () => {
         });
       });
     });
+
+    it('deleteItem() removes by id', ()=>{
+      const itemId = 3
+      return ShoppingListService.deleteItem(db, itemId)
+      .then(()=> ShoppingListService.getAllItems(db))
+      .then(allItems=>{
+        const expected = testItems.filter(item=>item.id !== itemId)
+        expect(allItems).to.eql(expected)
+      })
+    })
   });
 
   context("Given shopping_list has no data", () => {
