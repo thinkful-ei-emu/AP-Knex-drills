@@ -20,19 +20,36 @@ const knexInstance = knex({
 
 // getItems('fish')
 
-function paginate(pageNumber){
-    const rowsPerPage = 6;
-    const offset = rowsPerPage * (pageNumber - 1);
+// function paginate(pageNumber){
+//     const rowsPerPage = 6;
+//     const offset = rowsPerPage * (pageNumber - 1);
 
+//     knexInstance
+//     .select('*')
+//     .from('shopping_list')
+//     .limit(rowsPerPage)
+//     .offset(offset)
+//     .then(res=>{
+//         console.log(res)
+//     })
+//     .finally(()=>knexInstance.destroy())
+// }
+
+// paginate(3)
+
+function afterDate(daysAgo){
     knexInstance
     .select('*')
     .from('shopping_list')
-    .limit(rowsPerPage)
-    .offset(offset)
+    .where(
+        'date_added',
+        '>',
+        knexInstance.raw(`now() - '?? days'::INTERVAL`, daysAgo)
+    )
     .then(res=>{
         console.log(res)
     })
     .finally(()=>knexInstance.destroy())
 }
 
-paginate(3)
+afterDate(2)
